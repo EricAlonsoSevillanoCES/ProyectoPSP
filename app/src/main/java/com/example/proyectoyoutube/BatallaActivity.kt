@@ -2,6 +2,7 @@ package com.example.proyectoyoutube
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import com.example.proyectoyoutube.databinding.ActivityBatallaBinding
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +10,9 @@ import kotlinx.coroutines.*
 import java.net.DatagramPacket
 import java.net.InetAddress
 import java.net.MulticastSocket
+import java.security.MessageDigest
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 
 
 class BatallaActivity : AppCompatActivity() {
@@ -16,7 +20,7 @@ class BatallaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBatallaBinding
     private var valorCombate: Int = 0
     private var multicastJob: Job? = null
-
+    private var pass : String = "patata"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +49,9 @@ class BatallaActivity : AppCompatActivity() {
             val socketmulti = MulticastSocket(puerto)
             socketmulti.joinGroup(direccion)
 
-            val mensajeb = mensaje.toByteArray()
+            val encriptacion = encriptar(mensaje, pass)
+
+            val mensajeb = encriptacion.toByteArray()
             val enviar = DatagramPacket(mensajeb, mensajeb.size, direccion, puerto)
             socketmulti.send(enviar)
 
@@ -68,9 +74,11 @@ class BatallaActivity : AppCompatActivity() {
     }
 
     private fun procesarMensaje(mensaje: String) {
-        val puntosOponente = mensaje.toIntOrNull()
+        val puntosOponente = mensaje.toString()
+
         if (puntosOponente != null) {
-            mostrarResultadoBatalla(puntosOponente)
+            val desencrptado = desencriptar(puntosOponente, pass)
+            mostrarResultadoBatalla(desencrptado.toInt())
         }
     }
 
@@ -104,6 +112,30 @@ class BatallaActivity : AppCompatActivity() {
         // asegura que la tarea asociada a la corutina se detenga
         // y libere recursos cuando la actividad se destruye
         multicastJob?.cancel()
+    }
+
+    private fun encriptar(datos: String, password: String): String {
+        val secretKey = generateKey(password)
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+        val datosEncriptadosBytes = cipher.doFinal(datos.toByteArray())
+        return Base64.encodeToString(datosEncriptadosBytes, Base64.DEFAULT)
+    }
+
+    private fun generateKey(password: String): SecretKeySpec {
+        val sha = MessageDigest.getInstance("SHA-256")
+        var key = password.toByteArray(charset("UTF-8"))
+        key = sha.digest(key)
+        return SecretKeySpec(key, "AES")
+    }
+
+    private fun desencriptar(datos: String, password: String): String {
+        val secretKey = generateKey(password)
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.DECRYPT_MODE, secretKey)
+        val datosDescodificados = Base64.decode(datos, Base64.DEFAULT)
+        val datosDesencriptadosByte = cipher.doFinal(datosDescodificados)
+        return String(datosDesencriptadosByte)
     }
 
 

@@ -58,23 +58,26 @@ class SuperHeroListActivity : AppCompatActivity() {
 
     }
 
-    private fun searchByName(query : String) {
+    private fun searchByName(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val myResponse: Response<SuperHeroDataResponse> = retrofit.create(ApiService::class.java).getSuperheroes(query)
+            if (myResponse.isSuccessful) {
+                val response: SuperHeroDataResponse? = myResponse.body()
+                if (response != null) {
+                    // Filtrar la lista según el requisito deseado (solo "Marvel Comics")
+                    val filteredList = response.superheroes.filter { superhero ->
+                        superhero.biography.publisher.equals("DC Comics", ignoreCase = true)
+                    }
 
-        CoroutineScope(Dispatchers.IO).launch{
-            val myResponse : Response<SuperHeroDataResponse> = retrofit.create(ApiService::class.java).getSuperheroes(query)
-            if(myResponse.isSuccessful){
-                val response : SuperHeroDataResponse? = myResponse.body()
-                if(response != null){
-                    runOnUiThread(){
-                        adapter.updateList(response.superheroes)
+                    runOnUiThread {
+                        adapter.updateList(filteredList)
                     }
                 }
                 Log.i("aristidevs", "Funciona")
-            }else{
+            } else {
                 Log.i("aristidevs", "No funciona")
             }
         }
-
     }
 
     private fun getRetrofit(): Retrofit {

@@ -40,8 +40,9 @@ android {
 
 dependencies {
 
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
+    //implementation("org.jetbrains.kotlinx-coroutines-android:1.5.0")
 
-    implementation("org.jetbrains.kotlinx-coroutines-android:1.3.9")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
