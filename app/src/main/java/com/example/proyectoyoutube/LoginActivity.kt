@@ -37,12 +37,13 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                 val sha512 = MessageDigest.getInstance("SHA-512")
                 val bytes = (passIntroducida).toByteArray()
 
-                val passHash = sha512.digest(bytes)
+                val passHash = sha512.digest(bytes).joinToString("") { "%02x".format(it) }
 
                 nombre = intent.getStringExtra("nombrePasado").toString()
-                pass = intent.getByteArrayExtra("passHaseada").toString()
+                pass = intent.getStringExtra("passHaseada").toString()
 
-                if (nombre == nombreIntroducido && pass == passIntroducida){
+
+                if (nombre == nombreIntroducido && pass == passHash){
 
                     var intent : Intent = Intent(applicationContext, SuperHeroListActivity::class.java)
                     startActivity(intent)

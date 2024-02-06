@@ -13,9 +13,7 @@ import java.security.MessageDigest
 
 class RegistroActivity : AppCompatActivity(), OnClickListener {
 
-    private lateinit var binding : ActivityRegistroBinding
-
-    private lateinit var passHash : String
+    private lateinit var binding: ActivityRegistroBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,39 +23,25 @@ class RegistroActivity : AppCompatActivity(), OnClickListener {
     }
 
     override fun onClick(v: View?) {
-
-        when(v?.id){
-
+        when (v?.id) {
             R.id.botonGuardar -> {
-                var usuario : String = binding.editUsuario.text.toString()
-                var pass : String = binding.editPassRegistro.text.toString()
-                var passRepetida : String = binding.editPassRepeatRegistro.text.toString()
+                val usuario = binding.editUsuario.text.toString()
+                val pass = binding.editPassRegistro.text.toString()
+                val passRepetida = binding.editPassRepeatRegistro.text.toString()
 
-                if(pass == passRepetida){
-
-
-
+                if (pass == passRepetida) {
                     val sha512 = MessageDigest.getInstance("SHA-512")
-                    val bytes = (pass).toByteArray()
+                    val bytes = pass.toByteArray()
+                    val passHash = sha512.digest(bytes).joinToString("") { "%02x".format(it) }
 
-                    passHash = sha512.digest(bytes).toString()
-
-                    var intent : Intent = Intent(applicationContext, LoginActivity::class.java)
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
                     intent.putExtra("nombrePasado", usuario)
                     intent.putExtra("passHaseada", passHash)
-
                     startActivity(intent)
-
-
-                }else{
+                } else {
                     Snackbar.make(binding.root, "Las contraseñas no son iguales", Snackbar.LENGTH_SHORT).show()
                 }
-
             }
-
         }
-
     }
-
-
 }

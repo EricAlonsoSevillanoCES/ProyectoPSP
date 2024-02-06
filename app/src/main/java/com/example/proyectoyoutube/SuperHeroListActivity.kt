@@ -66,7 +66,7 @@ class SuperHeroListActivity : AppCompatActivity() {
                 if (response != null) {
                     // Filtrar la lista según el requisito deseado (solo "Marvel Comics")
                     val filteredList = response.superheroes.filter { superhero ->
-                        superhero.biography.publisher.equals("DC Comics", ignoreCase = true)
+                        superhero.biography.publisher.equals("Dark Horse Comics", ignoreCase = true)
                     }
 
                     runOnUiThread {

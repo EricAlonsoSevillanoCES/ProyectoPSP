@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/ivSuperhero"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="270dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +138,8 @@
 
 
             <TextView
-                android:text="Intelligence"
+                android:gravity="center"
+                android:text="🧠"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
@@ -149,7 +150,8 @@
 
                 />
             <TextView
-                android:text="Strength"
+                android:gravity="center"
+                android:text="🦾"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
@@ -160,7 +162,8 @@
 
                 />
             <TextView
-                android:text="Speed"
+                android:gravity="center"
+                android:text="🏃‍♀️"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
@@ -170,7 +173,8 @@
                 android:maxLines="1"
                 />
             <TextView
-                android:text="Durability"
+                android:gravity="center"
+                android:text="🛡️"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
@@ -180,7 +184,8 @@
                 android:maxLines="1"
                 />
             <TextView
-                android:text="Power"
+                android:gravity="center"
+                android:text="💥"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
@@ -190,7 +195,8 @@
                 android:maxLines="1"
                 />
             <TextView
-                android:text="Combat"
+                android:gravity="center"
+                android:text="⚔️"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
@@ -207,7 +213,9 @@
                 android:id="@+id/botonBatalla"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="50dp"
                 android:layout_weight="0.2"
+                android:backgroundTint="@color/batalla"
                 android:textSize="40dp"
                 android:text="Batalla" />
 
